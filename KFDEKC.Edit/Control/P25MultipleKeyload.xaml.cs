@@ -19,6 +19,8 @@ using KFDEKC.Shared;
 
 using KFDtool.P25;
 using KFDtool.P25.TransferConstructs;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace KFDEKC.Edit.Control
 {
@@ -83,8 +85,10 @@ namespace KFDEKC.Edit.Control
             foreach (KeyValuePair<int, string> selected in KeysSelected)
                 KeysAvailable.Remove(selected.Key);
 
-            lbKeysAvailable.Items.Refresh();
-            lbKeysSelected.Items.Refresh();
+            ICollectionView keysAvailableCollection = CollectionViewSource.GetDefaultView(lbKeysAvailable.ItemsSource);
+            keysAvailableCollection.Refresh();
+            ICollectionView keysSelectedCollection = CollectionViewSource.GetDefaultView(lbKeysSelected.ItemsSource);
+            keysSelectedCollection.Refresh();
         }
 
         /// <summary>
@@ -104,7 +108,8 @@ namespace KFDEKC.Edit.Control
                     KeksAvailable.Add(keyItem.Id, keyItem.Name);
             }
 
-            dropKeksAvailable.Items.Refresh();
+            ICollectionView dropKeksAvailableCollection = CollectionViewSource.GetDefaultView(dropKeksAvailable.ItemsSource);
+            dropKeksAvailableCollection.Refresh();
         }
 
         /// <summary>
@@ -123,8 +128,10 @@ namespace KFDEKC.Edit.Control
             foreach (KeyValuePair<int, string> selected in GroupsSelected)
                 GroupsAvailable.Remove(selected.Key);
 
-            lbGroupsAvailable.Items.Refresh();
-            lbGroupsSelected.Items.Refresh();
+            ICollectionView groupsAvailableCollection = CollectionViewSource.GetDefaultView(lbGroupsAvailable.ItemsSource);
+            groupsAvailableCollection.Refresh();
+            ICollectionView groupsSelectedCollection = CollectionViewSource.GetDefaultView(lbGroupsSelected.ItemsSource);
+            groupsSelectedCollection.Refresh();
         }
 
         /// <summary>
