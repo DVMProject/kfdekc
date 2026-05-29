@@ -1,0 +1,75 @@
+﻿<Window x:Class="KFDEKC.Edit.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KFDEKC.Edit"
+        xmlns:uc="clr-namespace:KFDEKC.Edit.Control"
+        mc:Ignorable="d"
+        Height="768" Width="1024" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Closing="MainWindow_Closing">
+    <Grid>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Name="miContainerNew" Header="_New" Click="Container_New_Click" />
+                    <MenuItem Name="miContainerOpen" Header="_Open" Click="Container_Open_Click" />
+                    <MenuItem Name="miContainerSave" Header="_Save" Click="Container_Save_Click"/>
+                    <MenuItem Name="miConatinerSaveAs" Header="_Save As" Click="Container_Save_As_Click"/>
+                    <MenuItem Name="miContainerClose" Header="_Close" Click="Container_Close_Click"/>
+                    <Separator />
+                    <MenuItem Name="miContainerChangePassword" Header="_Change Password" Click="Container_Change_Password_Click" />
+                    <Separator />
+                    <MenuItem Name="miContainerExportDKF" Header="Export to Harris _DKF" Click="Container_Export_DKF_Click"/>
+                    <Separator />
+                    <MenuItem Name="miContainerImportFNE" Header="Import from DVM FNE" Click="Container_Import_From_FNE_Click"/>
+                    <MenuItem Name="miContainerLoadFNE" Header="Load DVM _FNE" Click="Container_Load_FNE_Click"/>
+                    <Separator />
+                    <MenuItem Header="_Exit" Click="Exit_MenuItem_Click" />
+                </MenuItem>
+                <MenuItem Name="TypeMenu" Header="_Type">
+                    <MenuItem Name="TypeTwiKfdShield" Header="_TWI (KFDshield / other)" Click="Type_MenuItem_Click" />
+                    <MenuItem Name="TypeDliIp" Header="_DLI (IP)" Click="Type_MenuItem_Click" />
+                </MenuItem>
+                <MenuItem Name="DeviceMenu" Header="_Device" />
+                <MenuItem Name="KeyloaderMenu" Header="_Keyloader">
+                    <MenuItem Name="navigateP25MultipleKeyload" Header="_Multiple Keyload" Click="UserControl_MenuItem_Click" />
+                    <MenuItem Name="navigateP25KeyErase" Header="_Key Erase" Click="UserControl_MenuItem_Click" />
+                    <MenuItem Name="navigateP25EraseAllKeys" Header="_Erase All Keys" Click="UserControl_MenuItem_Click" />
+                    <MenuItem Name="navigateP25ViewKeyInfo" Header="_View Key Info" Click="UserControl_MenuItem_Click"/>
+                    <MenuItem Name="navigateP25ViewKeysetInfo" Header="_View Keyset Info" Click="UserControl_MenuItem_Click"/>
+                    <MenuItem Name="navigateP25ViewRsiConfig" Header="_RSI Configuration" Click="UserControl_MenuItem_Click"/>
+                    <MenuItem Name="navigateP25KmfConfig" Header="_KMF Configuration" Click="UserControl_MenuItem_Click"/>
+                </MenuItem>
+                <MenuItem Name="UtilityMenu" Header="_Utility">
+                    <MenuItem Name="NavigateUtilityChangeTheme" Header="_Change Theme">
+                        <MenuItem Name="NavigateUtilityChangeThemeLight" Header="_Light" Click="NavigateUtilityChangeThemeLight_Click" IsCheckable="True" />
+                        <MenuItem Name="NavigateUtilityChangeThemeDark" Header="_Dark" Click="NavigateUtilityChangeThemeDark_Click" IsCheckable="True" />
+                        <MenuItem Name="NavigateUtilityChangeThemeSystem" Header="_System" IsCheckable="True" Click="NavigateUtilityChangeThemeSystem_Click" />
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About" Click="About_MenuItem_Click" />
+                </MenuItem>
+            </Menu>
+            <StatusBar DockPanel.Dock="Bottom">
+                <StackPanel Orientation="Vertical">
+                    <StatusBarItem>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextAlignment="Right" Width="60" Foreground="Gray">Container:</TextBlock>
+                            <TextBlock Name="lblSelectedContainer" Margin="6 0 0 0">Not Opened</TextBlock>
+                        </StackPanel>
+                    </StatusBarItem>
+                    <StatusBarItem>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextAlignment="Right" Width="60" Foreground="Gray">Device:</TextBlock>
+                            <TextBlock Name="lblSelectedDevice" Margin="6 0 0 0">Not Connected</TextBlock>
+                        </StackPanel>
+                    </StatusBarItem>
+                </StackPanel>
+            </StatusBar>
+            <Grid>
+                <uc:ContainerEdit x:Name="containerEdit"></uc:ContainerEdit>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

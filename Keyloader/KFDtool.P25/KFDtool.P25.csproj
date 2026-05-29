@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <Deterministic>False</Deterministic>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\KFDEKC.Shared\KFDEKC.Shared.csproj" />
+    <ProjectReference Include="..\KFDtool.Adapter\KFDtool.Adapter.csproj" />
+  </ItemGroup>
+
+</Project>
