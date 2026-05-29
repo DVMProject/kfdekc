@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KFDEKC.Edit.Control"
              mc:Ignorable="d" 
-             Height="240" Width="320">
+             Height="120" Width="320">
     <Grid>
-        <Button Content="Confirm Erase All Keys" Click="Erase_Click" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Width="136"/>
+        <TextBlock Margin="10,10" TextWrapping="WrapWithOverflow" Foreground="#FFD41B1B" FontWeight="Bold">Are you sure you wish to ERASE all keys on the target device?</TextBlock>
+        <Button Content="Confirm Erase All Keys" Click="Erase_Click" HorizontalAlignment="Center" Margin="0,53,0,0" VerticalAlignment="Top" Width="136"/>
     </Grid>
 </UserControl>

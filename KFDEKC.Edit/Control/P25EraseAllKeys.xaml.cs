@@ -45,6 +45,7 @@ namespace KFDEKC.Edit.Control
             }
 
             MessageBox.Show("All Keys Erased Successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            Window.GetWindow(this).Close();
         }
     }
 }
