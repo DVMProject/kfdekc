@@ -22,7 +22,7 @@
                     <MenuItem Name="miContainerExportDKF" Header="Export to Harris _DKF" Click="Container_Export_DKF_Click"/>
                     <Separator />
                     <MenuItem Name="miContainerImportFNE" Header="Import from DVM FNE" Click="Container_Import_From_FNE_Click"/>
-                    <MenuItem Name="miContainerLoadFNE" Header="Load DVM _FNE" Click="Container_Load_FNE_Click"/>
+                    <MenuItem Name="miContainerExportFNE" Header="Export to DVM FNE" Click="Container_Export_To_FNE_Click"/>
                     <Separator />
                     <MenuItem Header="_Exit" Click="Exit_MenuItem_Click" />
                 </MenuItem>

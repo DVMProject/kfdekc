@@ -11,8 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+
+using fnecore;
 
 using FramePFX.Themes;
 
@@ -139,8 +143,7 @@ namespace KFDEKC.Edit
 
             miContainerChangePassword.IsEnabled = enabled;
             miContainerExportDKF.IsEnabled = enabled;
-            miContainerImportFNE.IsEnabled = enabled;
-            miContainerLoadFNE.IsEnabled = enabled;
+            miContainerExportFNE.IsEnabled = enabled;
             miContainerSave.IsEnabled = enabled;
             miConatinerSaveAs.IsEnabled = enabled;
             miContainerClose.IsEnabled = enabled;
@@ -711,9 +714,67 @@ namespace KFDEKC.Edit
                 Container_Close_Click(sender, e); // close an open container
             else
             {
-                /*
-                ** TODO TODO TODO
-                */
+                ContainerDVMCredentials dvmCredentials = new ContainerDVMCredentials();
+                dvmCredentials.Style = Window.GetWindow(this).Style;
+                dvmCredentials.Owner = this; // for centering in parent window
+                dvmCredentials.ShowDialog();
+
+                if (dvmCredentials.DataSet)
+                {
+                    this.Cursor = Cursors.Wait;
+
+                    IPEndPoint endpoint = IPEndPoint.Parse(dvmCredentials.DVMFNEIP);
+                    FnePeer peer = new FnePeer("KFD EKC", dvmCredentials.DVMFNEPeerID, endpoint);
+                    peer.Passphrase = dvmCredentials.DVMFNEPeerPassword;
+                    peer.StartWithoutMaintainence();
+
+                    peer.KeyInventory += (object sender, KeyInventoryEvent kie) =>
+                    {
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            this.Cursor = Cursors.Arrow;
+                            peer.Stop();
+
+                            ContainerEnterPassword containerEnterPassword = new ContainerEnterPassword();
+                            containerEnterPassword.Style = Window.GetWindow(this).Style;
+                            containerEnterPassword.Owner = this; // for centering in parent window
+                            containerEnterPassword.ShowDialog();
+
+                            if (containerEnterPassword.PasswordSet)
+                            {
+                                string password = containerEnterPassword.PasswordText;
+
+                                OuterContainer outerContainer;
+                                InnerContainer innerContainer;
+                                byte[] key;
+
+                                try
+                                {
+                                    (outerContainer, innerContainer, key) = ContainerUtilities.DecryptOuterContainer(kie.Data, password);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(string.Format("Failed to decrypt container: {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    return;
+                                }
+
+                                Settings.ContainerOpen = true;
+                                Settings.ContainerSaved = true;
+                                Settings.ContainerPath = Path.Combine(new string[] { Path.GetTempPath(), Path.GetTempFileName() });
+                                Settings.ContainerKey = key;
+                                Settings.ContainerOuter = outerContainer;
+                                Settings.ContainerInner = innerContainer;
+
+                                UpdateContainerText();
+                            }
+
+                            containerEdit.Refresh();
+                            SetMenuStates(true);
+                        });
+                    };
+
+                    peer.SendMasterKeyInventoryRequest(dvmCredentials.DVMFNERemoteAccessPassword);
+                }
             }
         }
 
@@ -722,16 +783,43 @@ namespace KFDEKC.Edit
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Container_Load_FNE_Click(object sender, RoutedEventArgs e)
+        private void Container_Export_To_FNE_Click(object sender, RoutedEventArgs e)
         {
             if (Settings.ContainerOpen)
             {
                 // first save the open container
                 Container_Save_Click(sender, e);
 
-                /*
-                ** TODO TODO TODO
-                */
+                ContainerDVMCredentials dvmCredentials = new ContainerDVMCredentials();
+                dvmCredentials.Style = Window.GetWindow(this).Style;
+                dvmCredentials.Owner = this; // for centering in parent window
+                dvmCredentials.ShowDialog();
+
+                if (dvmCredentials.DataSet)
+                {
+                    this.Cursor = Cursors.Wait;
+
+                    IPEndPoint endpoint = IPEndPoint.Parse(dvmCredentials.DVMFNEIP);
+                    FnePeer peer = new FnePeer("KFD EKC", dvmCredentials.DVMFNEPeerID, endpoint);
+                    peer.Passphrase = dvmCredentials.DVMFNEPeerPassword;
+                    peer.StartWithoutMaintainence();
+
+                    byte[] contents;
+
+                    try
+                    {
+                        contents = ContainerUtilities.EncryptOuterContainer(Settings.ContainerOuter, Settings.ContainerInner, Settings.ContainerKey);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(string.Format("Failed to encrypt container: {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    peer.SendMasterKeyUpdateRequest(contents, dvmCredentials.DVMFNERemoteAccessPassword);
+
+                    this.Cursor = Cursors.Arrow;
+                }
             }
         }
 
