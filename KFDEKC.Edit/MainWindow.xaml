@@ -26,18 +26,23 @@
                     <Separator />
                     <MenuItem Header="_Exit" Click="Exit_MenuItem_Click" />
                 </MenuItem>
-                <MenuItem Name="TypeMenu" Header="_Type">
-                    <MenuItem Name="TypeTwiKfdShield" Header="_TWI (KFDshield / other)" Click="Type_MenuItem_Click" />
-                    <MenuItem Name="TypeDliIp" Header="_DLI (IP)" Click="Type_MenuItem_Click" />
-                </MenuItem>
-                <MenuItem Name="DeviceMenu" Header="_Device" />
                 <MenuItem Name="KeyloaderMenu" Header="_Keyloader">
-                    <MenuItem Name="navigateP25MultipleKeyload" Header="_Multiple Keyload" Click="UserControl_MenuItem_Click" />
+                    <MenuItem Name="TypeMenu" Header="_Type">
+                        <MenuItem Name="TypeTwiKfdShield" Header="_TWI (KFDshield / other)" Click="Type_MenuItem_Click" />
+                        <MenuItem Name="TypeDliIp" Header="_DLI (IP)" Click="Type_MenuItem_Click" />
+                    </MenuItem>
+                    <MenuItem Name="DeviceMenu" Header="_Device" />
+                    <Separator />
+                    <MenuItem Name="navigateP25MultipleKeyFill" Header="_Key Fill" Click="UserControl_MenuItem_Click" />
+                    <MenuItem Name="navigateP25SingleKeyFill" Header="_Single Key Fill" Click="UserControl_MenuItem_Click" />
+                    <Separator />
                     <MenuItem Name="navigateP25KeyErase" Header="_Key Erase" Click="UserControl_MenuItem_Click" />
                     <MenuItem Name="navigateP25EraseAllKeys" Header="_Erase All Keys" Click="UserControl_MenuItem_Click" />
+                    <Separator />
                     <MenuItem Name="navigateP25ViewKeyInfo" Header="_View Key Info" Click="UserControl_MenuItem_Click"/>
                     <MenuItem Name="navigateP25ViewKeysetInfo" Header="_View Keyset Info" Click="UserControl_MenuItem_Click"/>
-                    <MenuItem Name="navigateP25ViewRsiConfig" Header="_RSI Configuration" Click="UserControl_MenuItem_Click"/>
+                    <Separator />
+                    <MenuItem Name="navigateP25RsiConfig" Header="_RSI Configuration" Click="UserControl_MenuItem_Click"/>
                     <MenuItem Name="navigateP25KmfConfig" Header="_KMF Configuration" Click="UserControl_MenuItem_Click"/>
                 </MenuItem>
                 <MenuItem Name="UtilityMenu" Header="_Utility">

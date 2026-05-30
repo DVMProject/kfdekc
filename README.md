@@ -1,7 +1,8 @@
 # KFD EKC Editor/Keyloader
 
-This is a fork of the original Omahacomsys KFDtool UI tool (https://github.com/omahacommsys/KFDtool). This fork implements direct integration into  a DVM FNE to allow for importing keys from or loading keys to a FNE. It addtionally, adds support
-for UKEK and LLA key storage.
+This is a fork of the original Omahacomsys KFDtool UI tool (https://github.com/omahacommsys/KFDtool). The primary purpose of this fork is for implementing remote management via DVM FNE's metadata network interface of EKC containers used on FNE installations. This 
+is not a replacement for the original KFDtool and should not be treated as such, while it has the same feature set, and supports keyloading via the KFDshield and KFDshield-clone devices, it does not support the original KFDtool device (this was done to remove HidLibrary as 
+a dependancy). Additionally for the DVM FNE integration, adds support to maintain, create, edit, delete UKEK and LLA keys.
 
 ## Building
 

@@ -24,5 +24,6 @@
         </ComboBox>
         <Label Name="lblType" Content="Label" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="247,111,0,0" VerticalAlignment="Top" Width="120"/>
         <Button Content="Erase" Click="Erase_Button_Click" HorizontalAlignment="Left" Margin="109,148,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBlock Name="eraseStatus" Margin="109,173,153,49"></TextBlock>
     </Grid>
 </UserControl>

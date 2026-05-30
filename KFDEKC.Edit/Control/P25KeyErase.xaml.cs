@@ -6,14 +6,15 @@
 *
 */
 
+using KFDEKC.Edit.Dialog;
+using KFDEKC.P25;
+using KFDtool.P25.TransferConstructs;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-
-using KFDtool.P25.TransferConstructs;
-using KFDEKC.P25;
+using System.Windows.Input;
 
 namespace KFDEKC.Edit.Control
 {
@@ -22,14 +23,17 @@ namespace KFDEKC.Edit.Control
     /// </summary>
     public partial class P25KeyErase : UserControl
     {
+        private Window parent;
         private bool IsKek { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public P25KeyErase()
+        public P25KeyErase(Window parent)
         {
             InitializeComponent();
+
+            this.parent = parent;
 
             IsKek = false;
 
@@ -256,6 +260,13 @@ namespace KFDEKC.Edit.Control
 
             keys.Add(keyItem);
 
+            parent.Cursor = Cursors.Wait;
+            Window.GetWindow(this).Cursor = Cursors.Wait;
+
+            eraseStatus.Text = $"Erasing key {txtSlnHex.Text} from device...please, wait.";
+            this.IsEnabled = false;
+            UserControlDialog.RefreshUi();
+
             try
             {
                 Interact.EraseKey(Settings.SelectedDevice, keys);
@@ -263,10 +274,18 @@ namespace KFDEKC.Edit.Control
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                eraseStatus.Text = "ERROR: Key was not erased!";
+                this.IsEnabled = true;
+                parent.Cursor = Cursors.Arrow;
+                Window.GetWindow(this).Cursor = Cursors.Arrow;
                 return;
             }
 
-            MessageBox.Show("Key Erased Successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            this.IsEnabled = true;
+
+            eraseStatus.Text = "Key erased successfully.";
+            parent.Cursor = Cursors.Arrow;
+            Window.GetWindow(this).Cursor = Cursors.Arrow;
         }
     }
 }

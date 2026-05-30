@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Input;
 using KFDtool.P25.TransferConstructs;
 
 namespace KFDEKC.Edit.Control
@@ -24,20 +24,21 @@ namespace KFDEKC.Edit.Control
         /// <summary>
         /// 
         /// </summary>
-        public P25ViewKeyInfo()
+        public P25ViewKeyInfo(Window parent)
         {
             InitializeComponent();
+
+            parent.Cursor = Cursors.Wait;
+            RetrieveKeyInfo();
+            parent.Cursor = Cursors.Arrow;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Update_Click(object sender, RoutedEventArgs e)
+        private void RetrieveKeyInfo()
         {
             KeyItems.ItemsSource = null; // clear table
-
             List<RspKeyInfo> keys = null;
 
             try
@@ -57,7 +58,7 @@ namespace KFDEKC.Edit.Control
                 KeyItems.Items.SortDescriptions.Add(new SortDescription("KeysetId", ListSortDirection.Ascending));
                 KeyItems.Items.SortDescriptions.Add(new SortDescription("Sln", ListSortDirection.Ascending));
 
-                MessageBox.Show(string.Format("{0} key(s) returned", keys.Count), "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                KeyCount.Text = $"{keys.Count} Key(s)";
             }
         }
     }

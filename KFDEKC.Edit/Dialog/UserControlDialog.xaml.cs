@@ -8,6 +8,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace KFDEKC.Edit.Dialog
 {
@@ -33,7 +34,24 @@ namespace KFDEKC.Edit.Dialog
 
             // resize dialog to control
             this.Width = control.Width;
-            this.Height = control.Height;
+            this.Height = control.Height + 40; // fixed pad -- this is probably not gonna scale well
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void RefreshUi()
+        {
+            DispatcherFrame frame = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
+                new DispatcherOperationCallback(delegate (object f)
+                {
+                    ((DispatcherFrame)f).Continue = false;
+                    return null;
+                }), frame);
+            Dispatcher.PushFrame(frame);
+
+            Thread.Sleep(1);
         }
     }
 }

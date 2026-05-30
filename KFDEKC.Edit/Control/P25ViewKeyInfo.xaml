@@ -6,12 +6,13 @@
              xmlns:local="clr-namespace:KFDEKC.Edit.Control"
              xmlns:res="clr-namespace:KFDtool.Gui.Converters"
              mc:Ignorable="d" 
-             Height="420" Width="800">
+             Height="400" Width="800">
     <UserControl.Resources>
         <res:AlgorithmFormatConverter x:Key="algorithmFormatConverter" />
     </UserControl.Resources>
     <Grid>
-        <DataGrid Name="KeyItems" AutoGenerateColumns="False" IsReadOnly="True" HorizontalAlignment="Left" Height="354" Margin="217,10,0,0" VerticalAlignment="Top" Width="507">
+        <TextBlock Name="KeyCount" Margin="38,14,38,361"></TextBlock>
+        <DataGrid Name="KeyItems" AutoGenerateColumns="False" IsReadOnly="True" HorizontalAlignment="Center" Height="351" VerticalAlignment="Top" Width="724" Margin="0,39,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=KeysetId, StringFormat={}{0} (0x{0:X})}" Header="Keyset ID" />
                 <DataGridTextColumn Binding="{Binding Path=Sln, StringFormat={}{0} (0x{0:X})}" Header="SLN" />
@@ -19,6 +20,5 @@
                 <DataGridTextColumn Binding="{Binding Path=AlgorithmId, Converter={StaticResource algorithmFormatConverter}}" Header="Algorithm" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button Click="Update_Click" Content="Update" HorizontalAlignment="Left" Margin="73,87,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </UserControl>

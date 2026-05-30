@@ -6,26 +6,23 @@
 *
 */
 
+using fnecore;
+using FramePFX.Themes;
+using KFDEKC.Container;
+using KFDEKC.Container.FileStructure.EKC;
+using KFDEKC.Edit.Dialog;
+using KFDtool.Adapter.Device;
+using KFDtool.P25.TransferConstructs;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
+using System.Reflection.PortableExecutable;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
-using fnecore;
-
-using FramePFX.Themes;
-
-using KFDEKC.Container;
-using KFDEKC.Container.FileStructure.EKC;
-using KFDEKC.Edit.Dialog;
-
-using KFDtool.Adapter.Device;
-using KFDtool.P25.TransferConstructs;
 
 namespace KFDEKC.Edit
 {
@@ -63,7 +60,7 @@ namespace KFDEKC.Edit
             AppDet = new AutoDetection();
             AppDet.DevicesChanged += CheckConnectedDevices;
 
-            // Load selected theme
+            // load selected theme
             UpdateWindowTheme();
 #if DEBUG
             this.Title = string.Format("KFD EKC Editor/Keyloader {0} DEBUG", Settings.ASSEMBLY_VERSION);
@@ -71,6 +68,7 @@ namespace KFDEKC.Edit
             this.Title = string.Format("KFD EKC Editor/Keyloader {0}", Settings.ASSEMBLY_VERSION);
 #endif
             SetMenuStates(false);
+            SetKeyloadMenuStates(false);
 
             // on load select the type from settings
             switch (Settings.SelectedDevice.DeviceType)
@@ -139,7 +137,10 @@ namespace KFDEKC.Edit
         {
             containerEdit.IsEnabled = enabled;
 
-            navigateP25MultipleKeyload.IsEnabled = enabled;
+            if (navigateP25SingleKeyFill.IsEnabled)
+                navigateP25MultipleKeyFill.IsEnabled = enabled;
+            else
+                navigateP25MultipleKeyFill.IsEnabled = false;
 
             miContainerChangePassword.IsEnabled = enabled;
             miContainerExportDKF.IsEnabled = enabled;
@@ -147,6 +148,26 @@ namespace KFDEKC.Edit
             miContainerSave.IsEnabled = enabled;
             miConatinerSaveAs.IsEnabled = enabled;
             miContainerClose.IsEnabled = enabled;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="enabled"></param>
+        private void SetKeyloadMenuStates(bool enabled)
+        {
+            if (containerEdit.IsEnabled)
+                navigateP25MultipleKeyFill.IsEnabled = enabled;
+            else
+                navigateP25MultipleKeyFill.IsEnabled = false;
+
+            navigateP25SingleKeyFill.IsEnabled = enabled;
+            navigateP25KeyErase.IsEnabled = enabled;
+            navigateP25EraseAllKeys.IsEnabled = enabled;
+            navigateP25ViewKeyInfo.IsEnabled = enabled;
+            navigateP25ViewKeysetInfo.IsEnabled = enabled;
+            navigateP25RsiConfig.IsEnabled = enabled;
+            navigateP25KmfConfig.IsEnabled = enabled;
         }
 
         /// <summary>
@@ -368,6 +389,8 @@ namespace KFDEKC.Edit
                     item.IsEnabled = false;
 
                     DeviceMenu.Items.Add(item);
+
+                    SetKeyloadMenuStates(false);
                 }
 
                 // one or more devices detected
@@ -394,6 +417,8 @@ namespace KFDEKC.Edit
                 "TWI ({0}) - None",
                 Settings.SelectedDevice.KfdDeviceType.ToString()
             );
+
+            SetKeyloadMenuStates(false);
         }
 
         /// <summary>
@@ -497,6 +522,8 @@ namespace KFDEKC.Edit
                     uniqueId,
                     fwVersion
                 );
+
+                SetKeyloadMenuStates(true);
             }
         }
 
@@ -926,20 +953,22 @@ namespace KFDEKC.Edit
                 string item = mi.Name;
                 UserControlDialog controlDialog = null;
 
-                if (item == "navigateP25MultipleKeyload")
-                    controlDialog = new UserControlDialog(this, new Control.P25MultipleKeyload(), "Keyloader - Key Fill");
+                if (item == "navigateP25MultipleKeyFill")
+                    controlDialog = new UserControlDialog(this, new Control.P25MultipleKeyload(this), "Keyloader - Key Fill");
+                else if (item == "navigateP25SingleKeyFill")
+                    controlDialog = new UserControlDialog(this, new Control.P25SingleKeyload(this), "Keyloader - Key Fill");
                 else if (item == "navigateP25KeyErase")
-                    controlDialog = new UserControlDialog(this, new Control.P25KeyErase(), "Keyloader - Erase Key");
+                    controlDialog = new UserControlDialog(this, new Control.P25KeyErase(this), "Keyloader - Erase Key");
                 else if (item == "navigateP25EraseAllKeys")
-                    controlDialog = new UserControlDialog(this, new Control.P25EraseAllKeys(), "Keyloader - Erase All Keys");
+                    controlDialog = new UserControlDialog(this, new Control.P25EraseAllKeys(this), "Keyloader - Erase All Keys");
                 else if (item == "navigateP25ViewKeyInfo")
-                    controlDialog = new UserControlDialog(this, new Control.P25ViewKeyInfo(), "Keyloader - View Key Information");
+                    controlDialog = new UserControlDialog(this, new Control.P25ViewKeyInfo(this), "Keyloader - View Key Information");
                 else if (item == "navigateP25ViewKeysetInfo")
-                    controlDialog = new UserControlDialog(this, new Control.P25ViewKeysetInfo(), "Keyloader - View Keyset Information");
-                else if (item == "navigateP25ViewRsiConfig")
-                    controlDialog = new UserControlDialog(this, new Control.P25ViewRsiConfig(), "Keyloader - View RSI Information");
+                    controlDialog = new UserControlDialog(this, new Control.P25ViewKeysetInfo(this), "Keyloader - View Keyset Information");
+                else if (item == "navigateP25RsiConfig")
+                    controlDialog = new UserControlDialog(this, new Control.P25RsiConfig(this), "Keyloader - RSI Configuration");
                 else if (item == "navigateP25KmfConfig")
-                    controlDialog = new UserControlDialog(this, new Control.P25KmfConfig(), "Keyloader - KMF Configuration");
+                    controlDialog = new UserControlDialog(this, new Control.P25KmfConfig(this), "Keyloader - KMF Configuration");
                 else
                     throw new Exception(string.Format("unknown item - {0}", mi.Name));
 

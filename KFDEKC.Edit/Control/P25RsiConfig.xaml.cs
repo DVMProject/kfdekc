@@ -19,16 +19,22 @@ using KFDtool.P25.TransferConstructs;
 namespace KFDEKC.Edit.Control
 {
     /// <summary>
-    /// Interaction logic for P25ViewKeyInfo.xaml
+    /// Interaction logic for P25RsiConfig.xaml
     /// </summary>
-    public partial class P25ViewRsiConfig : UserControl
+    public partial class P25RsiConfig : UserControl
     {
+        private Window parent;
+
         /// <summary>
         /// 
         /// </summary>
-        public P25ViewRsiConfig()
+        public P25RsiConfig(Window parent)
         {
             InitializeComponent();
+
+            this.parent = parent;
+
+            ViewRsiItems();
         }
 
         /// <summary>
@@ -127,6 +133,8 @@ namespace KFDEKC.Edit.Control
                 return;
             }
 
+            parent.Cursor = Cursors.Wait;
+
             try
             {
                 result = Interact.ChangeRsi(Settings.SelectedDevice, rsiOld, rsiNew, mn);
@@ -134,8 +142,11 @@ namespace KFDEKC.Edit.Control
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                parent.Cursor = Cursors.Arrow;
                 return;
             }
+
+            parent.Cursor = Cursors.Arrow;
 
             if (result.Status == 0)
             {
@@ -157,6 +168,8 @@ namespace KFDEKC.Edit.Control
 
             List<RspRsiInfo> items = null;
 
+            parent.Cursor = Cursors.Wait;
+
             try
             {
                 items = Interact.ViewRsiItems(Settings.SelectedDevice);
@@ -165,8 +178,11 @@ namespace KFDEKC.Edit.Control
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                parent.Cursor = Cursors.Arrow;
                 return;
             }
+
+            parent.Cursor = Cursors.Arrow;
 
             if (items != null)
             {

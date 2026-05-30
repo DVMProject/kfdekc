@@ -6,11 +6,12 @@
 *
 */
 
+using KFDEKC.Edit.Dialog;
+using KFDtool.P25.TransferConstructs;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-
-using KFDtool.P25.TransferConstructs;
+using System.Windows.Input;
 
 namespace KFDEKC.Edit.Control
 {
@@ -19,12 +20,16 @@ namespace KFDEKC.Edit.Control
     /// </summary>
     public partial class P25EraseAllKeys : UserControl
     {
+        private Window parent;
+
         /// <summary>
         /// 
         /// </summary>
-        public P25EraseAllKeys()
+        public P25EraseAllKeys(Window parent)
         {
             InitializeComponent();
+
+            this.parent = parent;
         }
 
         /// <summary>
@@ -34,6 +39,12 @@ namespace KFDEKC.Edit.Control
         /// <param name="e"></param>
         private void Erase_Click(object sender, RoutedEventArgs e)
         {
+            parent.Cursor = Cursors.Wait;
+            Window.GetWindow(this).Cursor = Cursors.Wait;
+
+            this.IsEnabled = false;
+            UserControlDialog.RefreshUi();
+
             try
             {
                 Interact.EraseAllKeys(Settings.SelectedDevice);
@@ -41,10 +52,15 @@ namespace KFDEKC.Edit.Control
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.IsEnabled = true;
+                parent.Cursor = Cursors.Arrow;
+                Window.GetWindow(this).Cursor = Cursors.Arrow;
                 return;
             }
 
             MessageBox.Show("All Keys Erased Successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            parent.Cursor = Cursors.Arrow;
+            Window.GetWindow(this).Cursor = Cursors.Arrow;
             Window.GetWindow(this).Close();
         }
     }

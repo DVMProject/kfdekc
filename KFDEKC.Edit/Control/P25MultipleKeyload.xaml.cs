@@ -6,21 +6,18 @@
 *
 */
 
-using Microsoft.Win32;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Threading.Tasks;
-
 using KFDEKC.Container.FileStructure.EKC;
+using KFDEKC.Edit.Dialog;
 using KFDEKC.Shared;
-
 using KFDtool.P25;
 using KFDtool.P25.TransferConstructs;
+using Microsoft.Win32;
+using System;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace KFDEKC.Edit.Control
 {
@@ -29,6 +26,8 @@ namespace KFDEKC.Edit.Control
     /// </summary>
     public partial class P25MultipleKeyload : UserControl
     {
+        private Window parent;
+
         private List<int> Keys;
         private List<int> Groups;
 
@@ -42,9 +41,11 @@ namespace KFDEKC.Edit.Control
         /// <summary>
         /// 
         /// </summary>
-        public P25MultipleKeyload()
+        public P25MultipleKeyload(Window parent)
         {
             InitializeComponent();
+
+            this.parent = parent;
 
             Keys = new List<int>();
             Groups = new List<int>();
@@ -287,26 +288,48 @@ namespace KFDEKC.Edit.Control
                     throw new Exception(string.Format("key with id {0} not found in container", keyId));
             }
 
-            // if the combo box isn't set to Clear, then keyload with the kek
+            parent.Cursor = Cursors.Wait;
+            Window.GetWindow(this).Cursor = Cursors.Wait;
+
+            loadStatus.Text = $"Loading {keys.Count} key(s) into device...please, wait.";
+            UserControlDialog.RefreshUi();
+
+            this.IsEnabled = false;
+
+            bool waitForOp = true;
             int selKekContainerIndex = ((KeyValuePair<int, string>)dropKeksAvailable.Items[dropKeksAvailable.SelectedIndex]).Key;
-            if (selKekContainerIndex > -1)
+            Task.Run(() =>
             {
-                CmdKeyItem selectedKek = new CmdKeyItem();
-                foreach (KeyItem containerKeyItem in Settings.ContainerInner.Keys)
+                // if the combo box isn't set to Clear, then keyload with the kek
+                if (selKekContainerIndex > -1)
                 {
-                    if (selKekContainerIndex == containerKeyItem.Id)
+                    CmdKeyItem selectedKek = new CmdKeyItem();
+                    foreach (KeyItem containerKeyItem in Settings.ContainerInner.Keys)
                     {
-                        selectedKek.Sln = containerKeyItem.Sln;
-                        selectedKek.IsKek = true;
-                        selectedKek.KeyId = containerKeyItem.KeyId;
-                        selectedKek.AlgorithmId = containerKeyItem.AlgorithmId;
-                        selectedKek.Key = Utility.ByteStringToByteList(containerKeyItem.Key);
+                        if (selKekContainerIndex == containerKeyItem.Id)
+                        {
+                            selectedKek.Sln = containerKeyItem.Sln;
+                            selectedKek.IsKek = true;
+                            selectedKek.KeyId = containerKeyItem.KeyId;
+                            selectedKek.AlgorithmId = containerKeyItem.AlgorithmId;
+                            selectedKek.Key = Utility.ByteStringToByteList(containerKeyItem.Key);
+                        }
                     }
+                    Interact.Keyload(Settings.SelectedDevice, keys, selectedKek);
                 }
-                Interact.Keyload(Settings.SelectedDevice, keys, selectedKek);
-            }
-            else
-                Interact.Keyload(Settings.SelectedDevice, keys);
+                else
+                    Interact.Keyload(Settings.SelectedDevice, keys);
+
+                waitForOp = false;
+            });
+
+            while (waitForOp)
+                UserControlDialog.RefreshUi();
+
+            this.IsEnabled = true;
+
+            parent.Cursor = Cursors.Arrow;
+            Window.GetWindow(this).Cursor = Cursors.Arrow;
         }
 
         /// <summary>
@@ -323,10 +346,13 @@ namespace KFDEKC.Edit.Control
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                loadStatus.Text = "ERROR: Key(s) were not loaded!";
+                parent.Cursor = Cursors.Arrow;
+                Window.GetWindow(this).Cursor = Cursors.Arrow;
                 return;
             }
 
-            MessageBox.Show("Key(s) Loaded Successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            loadStatus.Text = "Key(s) loaded successfully.";
         }
     }
 }

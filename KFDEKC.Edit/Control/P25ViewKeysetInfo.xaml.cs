@@ -6,14 +6,15 @@
 *
 */
 
+using KFDEKC.Edit.Dialog;
+using KFDtool.P25.TransferConstructs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-
-using KFDtool.P25.TransferConstructs;
+using System.Windows.Input;
 
 namespace KFDEKC.Edit.Control
 {
@@ -22,12 +23,20 @@ namespace KFDEKC.Edit.Control
     /// </summary>
     public partial class P25ViewKeysetInfo : UserControl
     {
+        private Window parent;
+
         /// <summary>
         /// 
         /// </summary>
-        public P25ViewKeysetInfo()
+        public P25ViewKeysetInfo(Window parent)
         {
             InitializeComponent();
+
+            this.parent = parent;
+
+            parent.Cursor = Cursors.Wait;
+            RetrieveKeysetInfo();
+            parent.Cursor = Cursors.Arrow;
         }
 
         /// <summary>
@@ -101,9 +110,7 @@ namespace KFDEKC.Edit.Control
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void View_KeysetInfo_Click(object sender, RoutedEventArgs e)
+        private void RetrieveKeysetInfo()
         {
             KeysetItems.ItemsSource = null; // clear table
 
@@ -123,7 +130,7 @@ namespace KFDEKC.Edit.Control
             {
                 KeysetItems.ItemsSource = keyset;
                 KeysetItems.Items.SortDescriptions.Add(new SortDescription("KeysetId", ListSortDirection.Ascending));
-                MessageBox.Show(string.Format("{0} keyset(s) returned", keyset.Count), "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                KeysetCount.Text = $"{keyset.Count} keyset(s)";
             }
         }
 
@@ -134,17 +141,29 @@ namespace KFDEKC.Edit.Control
         /// <param name="e"></param>
         private void Changeover_Click(object sender, RoutedEventArgs e)
         {
+            parent.Cursor = Cursors.Wait;
+            Window.GetWindow(this).Cursor = Cursors.Wait;
+
+            changeOverStatus.Text = $"Changing Keyset from {txtKsIdOldDec.Text} to {txtKsIdNewDec.Text}...please, wait.";
+            UserControlDialog.RefreshUi();
+
             RspChangeoverInfo changeoverResult = new RspChangeoverInfo();
             try
             {
                 changeoverResult = Interact.ActivateKeyset(Settings.SelectedDevice, int.Parse(txtKsIdOldDec.Text), int.Parse(txtKsIdNewDec.Text));
-                MessageBox.Show("Keyset " + changeoverResult.KeysetIdActivated + " activated, Keyset " + changeoverResult.KeysetIdSuperseded + " superseded", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                changeOverStatus.Text = $"Keyset {changeoverResult.KeysetIdActivated} activated, Keyset {changeoverResult.KeysetIdSuperseded} superseded.";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                changeOverStatus.Text = $"ERROR: Keyset changover failed! Keyset not actived!";
+                parent.Cursor = Cursors.Arrow;
+                Window.GetWindow(this).Cursor = Cursors.Arrow;
                 return;
             }
+
+            parent.Cursor = Cursors.Arrow;
+            Window.GetWindow(this).Cursor = Cursors.Arrow;
         }
     }
 }

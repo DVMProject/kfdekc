@@ -6,12 +6,12 @@
 *
 */
 
+using KFDtool.P25.TransferConstructs;
 using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-
-using KFDtool.P25.TransferConstructs;
+using System.Windows.Input;
 
 namespace KFDEKC.Edit.Control
 {
@@ -20,12 +20,18 @@ namespace KFDEKC.Edit.Control
     /// </summary>
     public partial class P25KmfConfig : UserControl
     {
+        private Window parent;
+
         /// <summary>
         /// 
         /// </summary>
-        public P25KmfConfig()
+        public P25KmfConfig(Window parent)
         {
             InitializeComponent();
+
+            this.parent = parent;
+
+            View_KmfRsi_Click(this, new RoutedEventArgs());
         }
 
         /// <summary>
@@ -104,6 +110,9 @@ namespace KFDEKC.Edit.Control
         private void View_MNP_Click(object sender, RoutedEventArgs e)
         {
             int mnp = -1;
+
+            parent.Cursor = Cursors.Wait;
+
             try
             {
                 mnp = Interact.ViewMnp(Settings.SelectedDevice);
@@ -111,11 +120,12 @@ namespace KFDEKC.Edit.Control
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                parent.Cursor = Cursors.Arrow;
                 return;
             }
 
             MessageBox.Show("Message Number Period: " + mnp, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-
+            parent.Cursor = Cursors.Arrow;
         }
 
         /// <summary>
@@ -125,6 +135,8 @@ namespace KFDEKC.Edit.Control
         /// <param name="e"></param>
         private void View_KmfRsi_Click(object sender, RoutedEventArgs e)
         {
+            parent.Cursor = Cursors.Wait;
+
             // First get KMF RSI
             try
             {
@@ -143,6 +155,7 @@ namespace KFDEKC.Edit.Control
                 catch (Exception ex)
                 {
                     MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    parent.Cursor = Cursors.Arrow;
                     return;
                 }
 
@@ -152,8 +165,11 @@ namespace KFDEKC.Edit.Control
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                parent.Cursor = Cursors.Arrow;
                 return;
             }
+
+            parent.Cursor = Cursors.Arrow;
         }
 
         /// <summary>
@@ -200,6 +216,8 @@ namespace KFDEKC.Edit.Control
                 return;
             }
 
+            parent.Cursor = Cursors.Wait;
+
             try
             {
                 RspRsiInfo temp = new RspRsiInfo();
@@ -209,8 +227,11 @@ namespace KFDEKC.Edit.Control
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error -- {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                parent.Cursor = Cursors.Arrow;
                 return;
             }
+
+            parent.Cursor = Cursors.Arrow;
         }
     }
 }
