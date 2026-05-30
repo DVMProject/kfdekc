@@ -56,15 +56,11 @@ namespace KFDEKC.P25.Generator
         public static List<byte> GenerateVarKey(int keyLenBytes)
         {
             if (keyLenBytes < 1)
-            {
                 throw new ArgumentOutOfRangeException();
-            }
-            RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider();
-            byte[] key = new byte[keyLenBytes];
-            rngCsp.GetBytes(key);
+
+            byte[] key = RandomNumberGenerator.GetBytes(keyLenBytes);
             List<byte> key2 = new List<byte>();
             key2.AddRange(key);
-            rngCsp.Dispose();
             return key2;
         }
 

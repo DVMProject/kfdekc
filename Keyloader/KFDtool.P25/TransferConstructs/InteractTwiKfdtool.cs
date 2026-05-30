@@ -59,7 +59,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -102,7 +102,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -148,7 +148,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -219,7 +219,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -265,7 +265,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -311,7 +311,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -351,7 +351,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -406,7 +406,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -447,7 +447,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -488,7 +488,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -528,7 +528,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -567,7 +567,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -609,7 +609,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -655,7 +655,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -702,7 +702,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -746,7 +746,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -789,7 +789,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -832,7 +832,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -875,7 +875,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }
@@ -920,7 +920,7 @@ namespace KFDtool.P25.TransferConstructs
                     if (ap != null)
                         ap.Close();
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     /* stub */
                 }

@@ -38,11 +38,7 @@ namespace KFDEKC.Container
         /// <returns></returns>
         public static byte[] GenerateSalt(int saltLength)
         {
-            byte[] salt = new byte[saltLength];
-
-            using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
-                rngCsp.GetBytes(salt);
-
+            byte[] salt = RandomNumberGenerator.GetBytes(saltLength);
             return salt;
         }
 
@@ -464,12 +460,9 @@ namespace KFDEKC.Container
                     aesCsp.Mode = CipherMode.CBC; // critical security parameter
 
                     // generate SALT and IV
-                    RNGCryptoServiceProvider rNGCryptoServiceProvider = new RNGCryptoServiceProvider();
-                    byte[] salt = new byte[32];
-                    rNGCryptoServiceProvider.GetBytes(salt);
+                    byte[] salt = RandomNumberGenerator.GetBytes(32);
                     innerSaltBase64 = Convert.ToBase64String(salt);
-                    byte[] iv = new byte[16];
-                    rNGCryptoServiceProvider.GetBytes(iv);
+                    byte[] iv = RandomNumberGenerator.GetBytes(16);
                     innerIVBase64 = Convert.ToBase64String(iv);
 
                     Rfc2898DeriveBytes rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, salt, 10000);

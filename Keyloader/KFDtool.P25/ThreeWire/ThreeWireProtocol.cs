@@ -383,7 +383,7 @@ namespace KFDtool.P25.ThreeWire
                             {
                                 rxFrame = ParseKmmFrame();
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
                                 break;
                             }
@@ -394,7 +394,7 @@ namespace KFDtool.P25.ThreeWire
                             {
                                 kfdKmmFrame = new KmmFrame(false, rxFrame.ToArray());
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
                                 byte[] message = rxFrame.ToArray();
 
@@ -525,7 +525,7 @@ namespace KFDtool.P25.ThreeWire
             {
                 return;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
