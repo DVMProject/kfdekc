@@ -684,8 +684,10 @@ namespace KFDtool.Adapter.Protocol.Adapter
             */
 
             if (rsp.Count == 1)
+            {
                 if (rsp[0] != RSP_RESET)
                     throw new Exception("invalid response opcode");
+            }
             else
                 throw new Exception("invalid response length");
         }
@@ -719,10 +721,12 @@ namespace KFDtool.Adapter.Protocol.Adapter
             */
 
             if (rsp.Count == 2)
+            {
                 if (rsp[0] == RSP_SELF_TEST)
                     return rsp[1];
                 else
                     throw new Exception("invalid response opcode");
+            }
             else
                 throw new Exception("invalid response length");
         }
@@ -757,8 +761,10 @@ namespace KFDtool.Adapter.Protocol.Adapter
             */
 
             if (rsp.Count == 1)
+            {
                 if (rsp[0] != RSP_SEND_KEY_SIG)
                     throw new Exception("invalid response opcode");
+            }
             else
                 throw new Exception("invalid response length");
         }
@@ -793,8 +799,10 @@ namespace KFDtool.Adapter.Protocol.Adapter
             */
 
             if (rsp.Count == 1)
+            {
                 if (rsp[0] != RSP_SEND_KEY_SIG_AND_READY_REQ)
                     throw new Exception("invalid response opcode");
+            }
             else
                 throw new Exception("invalid response length");
         }
@@ -831,8 +839,10 @@ namespace KFDtool.Adapter.Protocol.Adapter
             */
 
             if (rsp.Count == 1)
+            {
                 if (rsp[0] != RSP_SEND_BYTE)
                     throw new Exception("invalid response opcode");
+            }
             else
                 throw new Exception("invalid response length");
         }
@@ -873,8 +883,10 @@ namespace KFDtool.Adapter.Protocol.Adapter
             */
 
             if (rsp.Count == 1)
+            {
                 if (rsp[0] != RSP_SEND_BYTES)
                     throw new Exception("invalid response opcode");
+            }
             else
                 throw new Exception("invalid response length");
         }
@@ -897,8 +909,10 @@ namespace KFDtool.Adapter.Protocol.Adapter
                 if (data.Count <= dataBytesPerCommand)
                     SendBytes(data);
                 else
+                {
                     for (int offset = 0; offset < data.Count; offset += dataBytesPerCommand)
                         SendBytes(data.Skip(offset).Take(dataBytesPerCommand).ToList());
+                }
             }
             else
             {
@@ -926,10 +940,12 @@ namespace KFDtool.Adapter.Protocol.Adapter
             */
 
             if (rsp.Count == 3)
+            {
                 if (rsp[0] == BCST_RECEIVE_BYTE)
                     return rsp[2];
                 else
                     throw new Exception("invalid broadcast opcode");
+            }
             else
                 throw new Exception("invalid broadcast length");
         }
