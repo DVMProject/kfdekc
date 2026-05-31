@@ -46,6 +46,8 @@
                     <MenuItem Name="navigateP25KmfConfig" Header="_KMF Configuration" Click="UserControl_MenuItem_Click"/>
                 </MenuItem>
                 <MenuItem Name="UtilityMenu" Header="_Utility">
+                    <MenuItem Name="navigateContainerViewKeyInfo" Header="View Container Key Info" Click="UserControl_MenuItem_Click"/>
+                    <Separator />
                     <MenuItem Name="NavigateUtilityChangeTheme" Header="_Change Theme">
                         <MenuItem Name="NavigateUtilityChangeThemeLight" Header="_Light" Click="NavigateUtilityChangeThemeLight_Click" IsCheckable="True" />
                         <MenuItem Name="NavigateUtilityChangeThemeDark" Header="_Dark" Click="NavigateUtilityChangeThemeDark_Click" IsCheckable="True" />

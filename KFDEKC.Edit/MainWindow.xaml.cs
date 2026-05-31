@@ -148,6 +148,8 @@ namespace KFDEKC.Edit
             miContainerSave.IsEnabled = enabled;
             miConatinerSaveAs.IsEnabled = enabled;
             miContainerClose.IsEnabled = enabled;
+
+            navigateContainerViewKeyInfo.IsEnabled = enabled;
         }
 
         /// <summary>
@@ -969,6 +971,8 @@ namespace KFDEKC.Edit
                     controlDialog = new UserControlDialog(this, new Control.P25RsiConfig(this), "Keyloader - RSI Configuration");
                 else if (item == "navigateP25KmfConfig")
                     controlDialog = new UserControlDialog(this, new Control.P25KmfConfig(this), "Keyloader - KMF Configuration");
+                else if (item == "navigateContainerViewKeyInfo")
+                    controlDialog = new UserControlDialog(this, new Control.ContainerViewKeyInfo(this), "Container - View Key Information");
                 else
                     throw new Exception(string.Format("unknown item - {0}", mi.Name));
 
