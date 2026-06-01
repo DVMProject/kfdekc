@@ -12,6 +12,7 @@ using System.Reflection;
 
 using KFDEKC.Container.FileStructure.EKC;
 
+using KFDtool.Adapter.Device;
 using KFDtool.P25.TransferConstructs;
 
 namespace KFDEKC.Edit
@@ -73,6 +74,19 @@ namespace KFDEKC.Edit
         /// </summary>
         public static BaseDevice SelectedDevice { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string LastDVMFNEHostname { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static int LastDVMFNEPort { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static uint LastDVMFNEPeerId { get; set; }
+
         /*
         ** Methods
         */
@@ -95,6 +109,10 @@ namespace KFDEKC.Edit
             SelectedDevice.DliIpDevice = new DliIpDevice();
             SelectedDevice.DliIpDevice.Protocol = DliIpDevice.ProtocolOptions.UDP;
 
+            LastDVMFNEHostname = string.Empty;
+            LastDVMFNEPort = 0;
+            LastDVMFNEPeerId = 0;
+
             SelectedTheme = ThemeMode.System;
 
             //LoadSettings();
@@ -112,6 +130,10 @@ namespace KFDEKC.Edit
             Properties.Settings.Default.DeviceType = "TwiKfdDevice";
             Properties.Settings.Default.KfdDeviceType = "KfdShield";
 
+            Properties.Settings.Default.LastDVMHostname = string.Empty;
+            Properties.Settings.Default.LastDVMPort = 0;
+            Properties.Settings.Default.LastDVMPeerID = 0;
+
             Properties.Settings.Default.SelectedTheme = "System";
             Properties.Settings.Default.Save();
         }
@@ -128,6 +150,10 @@ namespace KFDEKC.Edit
             Properties.Settings.Default.DeviceType = SelectedDevice.DeviceType.ToString();
             Properties.Settings.Default.KfdDeviceType = SelectedDevice.KfdDeviceType.ToString();
 
+            Properties.Settings.Default.LastDVMHostname = LastDVMFNEHostname;
+            Properties.Settings.Default.LastDVMPort = LastDVMFNEPort;
+            Properties.Settings.Default.LastDVMPeerID = LastDVMFNEPeerId;
+
             Properties.Settings.Default.SelectedTheme = SelectedTheme.ToString();
             Properties.Settings.Default.Save();
         }
@@ -137,6 +163,17 @@ namespace KFDEKC.Edit
         /// </summary>
         public static void LoadSettings()
         {
+            SelectedDevice.TwiKfdtoolDevice.ComPort = Properties.Settings.Default.TwiComPort;
+            SelectedDevice.DliIpDevice.Hostname = Properties.Settings.Default.DliHostname;
+            SelectedDevice.DliIpDevice.Port = Properties.Settings.Default.DliPort;
+            SelectedDevice.DliIpDevice.Variant = (DliIpDevice.VariantOptions)Enum.Parse(typeof(DliIpDevice.VariantOptions), Properties.Settings.Default.DliVariant);
+            SelectedDevice.DeviceType = (BaseDevice.DeviceTypeOptions)Enum.Parse(typeof(BaseDevice.DeviceTypeOptions), Properties.Settings.Default.DeviceType);
+            SelectedDevice.KfdDeviceType = (TwiKfdDevice)Enum.Parse(typeof(TwiKfdDevice), Properties.Settings.Default.KfdDeviceType);
+
+            LastDVMFNEHostname = Properties.Settings.Default.LastDVMHostname;
+            LastDVMFNEPort = Properties.Settings.Default.LastDVMPort;
+            LastDVMFNEPeerId = Properties.Settings.Default.LastDVMPeerID;
+
             SelectedTheme = (ThemeMode)Enum.Parse(typeof(ThemeMode), Properties.Settings.Default.SelectedTheme);
         }
     }

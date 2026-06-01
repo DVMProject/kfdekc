@@ -557,6 +557,7 @@ namespace KFDEKC.Edit
         /// <param name="e"></param>
         private void Exit_MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            Settings.SaveSettings();
             Application.Current.Shutdown();
         }
 

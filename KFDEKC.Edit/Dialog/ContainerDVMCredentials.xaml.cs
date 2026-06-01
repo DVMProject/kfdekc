@@ -60,6 +60,18 @@ namespace KFDEKC.Edit.Dialog
             DVMFNERemoteAccessPassword = string.Empty;
 
             txtDVMFNEIP.Focus();
+
+            if (Settings.LastDVMFNEHostname != string.Empty)
+            {
+                txtDVMFNEIP.Text = $"{Settings.LastDVMFNEHostname}:{Settings.LastDVMFNEPort}";
+                txtDVMPeerID.Focus();
+            }
+
+            if (Settings.LastDVMFNEPeerId > 0)
+            {
+                txtDVMPeerID.Text = Settings.LastDVMFNEPeerId.ToString();
+                txtDVMPeerPassword.Focus();
+            }
         }
 
         /// <summary>
@@ -75,11 +87,47 @@ namespace KFDEKC.Edit.Dialog
                 return;
             }
 
-            try
+            string rawUri = txtDVMFNEIP.Text;
+            if (!rawUri.Contains("://"))
+                rawUri = $"udp://{rawUri}";
+
+            string resultFNEIP = string.Empty;
+            if (Uri.TryCreate(rawUri, UriKind.Absolute, out Uri uri))
             {
-                IPEndPoint.Parse(txtDVMFNEIP.Text);
+                try
+                {
+                    string host = uri.Host;
+                    try
+                    {
+                        IPAddress[] addresses = Dns.GetHostAddresses(host);
+                        if (addresses.Length > 0)
+                            host = addresses[0].ToString();
+                    }
+                    catch (Exception)
+                    {
+                        /* stub */
+                    }
+
+                    int port = uri.Port;
+
+                    IPEndPoint.Parse($"{host}:{port}");
+                    Settings.LastDVMFNEHostname = host;
+                    Settings.LastDVMFNEPort = port;
+                    resultFNEIP = host + ":" + port;
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("DVM FNE IP and port must be a properly formatted as: IP:PORT", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
-            catch (FormatException)
+            else
+            {
+                MessageBox.Show("DVM FNE IP and port must be a properly formatted as: IP:PORT", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (resultFNEIP.Length == 0)
             {
                 MessageBox.Show("DVM FNE IP and port must be a properly formatted as: IP:PORT", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -98,6 +146,8 @@ namespace KFDEKC.Edit.Dialog
                 return;
             }
 
+            Settings.LastDVMFNEPeerId = peerId;
+
             if (txtDVMPeerPassword.Password.Length == 0)
             {
                 MessageBox.Show("DVM FNE peer password is required", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -111,7 +161,7 @@ namespace KFDEKC.Edit.Dialog
             }
 
             DataSet = true;
-            DVMFNEIP = txtDVMFNEIP.Text;
+            DVMFNEIP = resultFNEIP;
             DVMFNEPeerID = peerId;
             DVMFNEPeerPassword = txtDVMPeerPassword.Password;
             DVMFNERemoteAccessPassword = txtDVMRemoteAccessPassword.Password;

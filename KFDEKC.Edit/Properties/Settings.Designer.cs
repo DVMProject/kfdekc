@@ -118,5 +118,41 @@ namespace KFDEKC.Edit.Properties {
                 this["KfdDeviceType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastDVMHostname {
+            get {
+                return ((string)(this["LastDVMHostname"]));
+            }
+            set {
+                this["LastDVMHostname"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LastDVMPort {
+            get {
+                return ((int)(this["LastDVMPort"]));
+            }
+            set {
+                this["LastDVMPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public uint LastDVMPeerID {
+            get {
+                return ((uint)(this["LastDVMPeerID"]));
+            }
+            set {
+                this["LastDVMPeerID"] = value;
+            }
+        }
     }
 }
