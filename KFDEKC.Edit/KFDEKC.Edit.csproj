@@ -13,13 +13,13 @@
     <Copyright>Copyright (c) 2026 DVMProject (https://github.com/dvmproject) Authors.</Copyright>
     <PlatformTarget>x86</PlatformTarget>
     <PackageLicenseExpression>MIT-only</PackageLicenseExpression>
-    <ApplicationIcon>kfdtool-icon.ico</ApplicationIcon>
+    <ApplicationIcon>kfdekc.ico</ApplicationIcon>
     <Title>KFD EKC Editor/Keyloader</Title>
     <Authors>DVMProject (https://github.com/dvmproject) Authors</Authors>
     <Company>DVMProject</Company>
     <Product>KFD EKC Editor/Keyloader</Product>
     <PackageProjectUrl>https://github.com/DVMProject/kfdekc</PackageProjectUrl>
-    <PackageIcon>AppIcon.png</PackageIcon>
+    <PackageIcon>kfdekc.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/DVMProject/kfdekc</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -33,8 +33,6 @@
     <None Remove="Images\Algos\ARC4.png" />
     <None Remove="Images\Algos\DES.png" />
     <None Remove="Images\Algos\OTHER.png" />
-    <None Remove="Images\kfdtool-icon.ico" />
-    <None Remove="Images\kfdtool-icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,8 +48,6 @@
     <Resource Include="Images\Algos\ARC4.png" />
     <Resource Include="Images\Algos\DES.png" />
     <Resource Include="Images\Algos\OTHER.png" />
-    <Resource Include="Images\kfdtool-icon.ico" />
-    <Resource Include="Images\kfdtool-icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +59,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="kfdekc.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
