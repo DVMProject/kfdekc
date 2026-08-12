@@ -29,9 +29,8 @@ namespace KFDEKC.Edit
         /// </summary>
         public enum ThemeMode
         {
-            System,
-            Dark,
-            Light
+            Dark = 1,
+            Light = 2
         }
 
         /// <summary>
@@ -113,7 +112,7 @@ namespace KFDEKC.Edit
             LastDVMFNEPort = 0;
             LastDVMFNEPeerId = 0;
 
-            SelectedTheme = ThemeMode.System;
+            SelectedTheme = ThemeMode.Dark;
 
             //LoadSettings();
         }
@@ -134,7 +133,7 @@ namespace KFDEKC.Edit
             Properties.Settings.Default.LastDVMPort = 0;
             Properties.Settings.Default.LastDVMPeerID = 0;
 
-            Properties.Settings.Default.SelectedTheme = "System";
+            Properties.Settings.Default.SelectedTheme = ThemeMode.Dark.ToString();
             Properties.Settings.Default.Save();
         }
 
@@ -174,7 +173,23 @@ namespace KFDEKC.Edit
             LastDVMFNEPort = Properties.Settings.Default.LastDVMPort;
             LastDVMFNEPeerId = Properties.Settings.Default.LastDVMPeerID;
 
-            SelectedTheme = (ThemeMode)Enum.Parse(typeof(ThemeMode), Properties.Settings.Default.SelectedTheme);
+            SelectedTheme = LoadSelectedTheme();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static ThemeMode LoadSelectedTheme()
+        {
+            if (Enum.TryParse(Properties.Settings.Default.SelectedTheme, true, out ThemeMode selectedTheme) &&
+                Enum.IsDefined(typeof(ThemeMode), selectedTheme))
+            {
+                return selectedTheme;
+            }
+
+            Properties.Settings.Default.SelectedTheme = ThemeMode.Dark.ToString();
+            Properties.Settings.Default.Save();
+            return ThemeMode.Dark;
         }
     }
 }

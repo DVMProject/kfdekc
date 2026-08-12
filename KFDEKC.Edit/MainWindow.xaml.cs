@@ -186,41 +186,14 @@ namespace KFDEKC.Edit
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        public static bool IsSystemLightTheme()
-        {
-            var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-            var value = key?.GetValue("AppsUseLightTheme");
-            return value is int i && i > 0;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         private void UpdateWindowTheme()
         {
             // Reset checks
             NavigateUtilityChangeThemeDark.IsChecked = false;
             NavigateUtilityChangeThemeLight.IsChecked = false;
-            NavigateUtilityChangeThemeSystem.IsChecked = false;
             // Change theme
             switch (Settings.SelectedTheme)
             {
-                // System theme, detect light/dark mode
-                case Settings.ThemeMode.System:
-                    NavigateUtilityChangeThemeSystem.IsChecked = true;
-                    if (IsSystemLightTheme())
-                    {
-                        //ThemesController.SetTheme(ThemeType.LightTheme);
-                        ThemesController.ClearTheme();
-                        this.Style = new Style();
-                    }
-                    else
-                    {
-                        ThemesController.SetTheme(ThemeType.SoftDark);
-                    }
-                    break;
-
                 // Light theme
                 case Settings.ThemeMode.Light:
                     NavigateUtilityChangeThemeLight.IsChecked = true;
@@ -1026,14 +999,6 @@ namespace KFDEKC.Edit
         private void NavigateUtilityChangeThemeLight_Click(object sender, RoutedEventArgs e)
         {
             Settings.SelectedTheme = Settings.ThemeMode.Light;
-            Settings.SaveSettings();
-
-            UpdateWindowTheme();
-        }
-
-        private void NavigateUtilityChangeThemeSystem_Click(object sender, RoutedEventArgs e)
-        {
-            Settings.SelectedTheme = Settings.ThemeMode.System;
             Settings.SaveSettings();
 
             UpdateWindowTheme();
