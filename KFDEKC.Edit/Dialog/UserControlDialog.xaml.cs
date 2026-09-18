@@ -30,6 +30,7 @@ namespace KFDEKC.Edit.Dialog
 
             this.Title = title;
             this.Owner = owner;
+            this.Style = owner.Style;
             this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
             // resize dialog to control
